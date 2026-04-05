@@ -80,7 +80,7 @@ const CONFIG = {
    // { title: "РЕЖИССЁР", icon: Heart, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
     { title: "ТУРАГЕНТ", icon: Flame, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
    // { title: "АВТОРСКИЕ ТУРЫ", icon: Star, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
-   // { title: "ПСИХОЛОГ", icon: Camera, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
+    { title: "ПСИХОЛОГ", icon: Camera, demoLink: "https://alenarejmond-hash.github.io/app-vk/" }, // Замените ссылку на свою
    // { title: "ЭЗОРЕТИК", icon: Sparkles, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
   ],
 
