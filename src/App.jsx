@@ -14,8 +14,14 @@ if (typeof window !== 'undefined' && !document.getElementById('tg-web-app-script
   document.head.appendChild(script);
 }
 
-// =========================================================================
-// 🛠 ЗОНА НАСТРОЕК: МЕНЯЙТЕ СВОИ ДАННЫЕ, ФОТО И ТЕКСТЫ ЗДЕСЬ
+if (typeof window !== 'undefined' && !document.getElementById('vk-bridge-script')) {
+  const script = document.createElement('script');
+  script.id = 'vk-bridge-script';
+  script.src = 'https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js';
+  script.async = true;
+  document.head.appendChild(script);
+}
+
 // =========================================================================
 const CONFIG = {
   // 1. Главное фото (которое проявляется по удержанию пальца)
@@ -61,13 +67,13 @@ const CONFIG = {
   // icon - Иконка проекта (Можно писать: Compass, Heart, Flame, Star, Camera, Sparkles)
   // demoLink - 👈 ВСТАВЬТЕ СЮДА ССЫЛКУ НА ВАШ ШАБЛОН (загруженный на ваш хостинг)
   portfolio: [
-    { title: "ШОУРИЛ 2026", icon: Compass, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
-    { title: "БЛОГЕР", icon: Heart, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
-    { title: "РЕЖИССЁР", icon: Heart, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
+    { title: "NANO-визитка", icon: Compass, demoLink: "https://nano.nice-app.ru/" }, // Замените ссылку на свою
+   // { title: "ТУРАГЕНТ", icon: Heart, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
+   // { title: "РЕЖИССЁР", icon: Heart, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
     { title: "ТУРАГЕНТ", icon: Flame, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
-    { title: "АВТОРСКИЕ ТУРЫ", icon: Star, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
-    { title: "ПСИХОЛОГ", icon: Camera, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
-    { title: "ЭЗОРЕТИК", icon: Sparkles, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
+   // { title: "АВТОРСКИЕ ТУРЫ", icon: Star, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
+   // { title: "ПСИХОЛОГ", icon: Camera, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
+   // { title: "ЭЗОРЕТИК", icon: Sparkles, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
   ],
 
   // 7. Инвестиции (Тарифы) в стиле Apple Wallet
@@ -82,26 +88,26 @@ const CONFIG = {
     {
       id: 'nano',
       title: 'Nano',
-      subtitle: 'Цифровой минимализм',
-      price: '1 990 ₽',
+      subtitle: 'Премиальный старт',
+      price: '3 990 ₽',
       oldPrice: '5 000 ₽',
-      features: ['Чистый WOW-эффект без лишних слов', 'Работает без VPN в любой точке мира', 'Твой личный поддомен имя.nice-app.ru', 'Полное наполнение контентом за тебя', 'Запуск со скоростью света: 1–3 дня', 'Престижная анимация появления', 'Вечный доступ: без абонентской платы'],
+      features: ['Web-визитка с WOW-эффектом', 'Работает с/без VPN в любой точке мира', 'Твой личный поддомен имя.appsea.ru', 'Сохранение ваших контактов в один клик', 'Аналитика Яндекс.Метрики', 'Установка на экран телефона (PWA)', 'Быстрый запуск: 1–3 дня', 'Вечный доступ: без абонентской платы'],
     },
     {
       id: 'base', 
       title: 'Pro',
       subtitle: 'Авторская архитектура',
-      price: '7 000 ₽',
-      oldPrice: '10 000 ₽',
-      features: ['Premium-шаблон из моей базы', 'Адаптация под ваш контент и цвета', 'Мини-апп в ТГ/ВК + веб-версия (PWA)', 'Поддомен имя.nice-app.ru навсегда', 'Бот + пост + запуск «под ключ»(в тг/вк)', 'Запуск за 3-5 дней', 'Один платеж. Никаких подписок'],
+      price: '9 900 ₽',
+      oldPrice: '14 000 ₽',
+      features: ['Premium-шаблон из моей базы', 'Адаптация под ваш контент и цвета', 'Сложные 3D и WebGL эффекты', 'Аналитика Яндекс.Метрики', 'Мини-апп в ТГ/ВК + веб-версия (PWA)', 'Поддомен имя.nice-app.ru навсегда', 'Бот + пост + запуск «под ключ»(в тг/вк)', 'Запуск за 3-5 дней', 'Один платеж. Никаких подписок'],
     },
     {
       id: 'custom',
       title: 'Ultra',
-      subtitle: 'Haute Couture в коде',
-      price: 'от 8 000 ₽',
-      oldPrice: 'от 15 000 ₽',
-      features: ['Уникальный дизайн и логика «с нуля»', 'Сложные 3D и WebGL эффекты', 'Мини-апп в ТГ/ВК + веб-версия (PWA)', 'Поддомен имя.nice-app.ru навсегда', 'Подключение вашего личного домена (помощь с покупкой и настройкой)', 'Бот + пост + запуск «под ключ»(в тг/вк)', 'Запуск за 5-7 дней', 'Без аренды: Ваш личный цифровой актив навсегда'],
+      subtitle: 'Индивидуальная разработка',
+      price: 'от 15 000 ₽',
+      oldPrice: 'от 22 000 ₽',
+      features: ['Уникальный дизайн и логика «с нуля»', 'Сложные 3D и WebGL эффекты', 'Уникальный UI/UX дизайн', 'Аналитика Яндекс.Метрики', 'Мини-апп в ТГ/ВК + веб-версия (PWA)', 'Поддомен имя.nice-app.ru навсегда', 'Подключение вашего личного домена (помощь с покупкой и настройкой)', 'Бот + пост + запуск «под ключ»(в тг/вк)', 'Запуск за 5-7 дней', 'Без аренды: Ваш личный цифровой актив навсегда'],
     }
   ],
 
@@ -502,23 +508,37 @@ export default function App() {
   const pointerPos = useRef({ x: -1000, y: -1000 });
   
   const [isHeroRevealed, setIsHeroRevealed] = useState(false);
-  const [isTG, setIsTG] = useState(false);
+  const [appPlatform, setAppPlatform] = useState('web'); // 'tg', 'vk', 'web'
 
-  // 0. Нативная вибрация Telegram
+  // 0. Универсальная нативная вибрация (TG + VK + Web)
   const triggerHaptic = useCallback((type = 'impact', style = 'light') => {
     try {
-      const tg = window.Telegram?.WebApp?.HapticFeedback;
-      if (!tg) return;
+      // Telegram
+      const tg = window.Telegram?.WebApp;
+      if (tg && tg.platform && tg.platform !== 'unknown' && tg.HapticFeedback) {
+        if (type === 'impact') tg.HapticFeedback.impactOccurred(style === 'light' ? 'light' : 'medium');
+        else if (type === 'selection') tg.HapticFeedback.selectionChanged();
+        else if (type === 'notification') tg.HapticFeedback.notificationOccurred(style === 'error' ? 'error' : 'success');
+        return;
+      }
 
-      if (type === 'impact') {
-        tg.impactOccurred(style === 'light' ? 'light' : 'medium');
-      } else if (type === 'selection') {
-        tg.selectionChanged();
-      } else if (type === 'notification') {
-        tg.notificationOccurred(style === 'error' ? 'error' : 'success');
+      // VKontakte
+      const vk = window.vkBridge;
+      if (vk && vk.supports && vk.supports('VKWebAppTapticImpactOccurred')) {
+        if (type === 'impact') vk.send('VKWebAppTapticImpactOccurred', { style: style === 'light' ? 'light' : 'medium' });
+        else if (type === 'selection') vk.send('VKWebAppTapticSelectionChanged');
+        else if (type === 'notification') vk.send('VKWebAppTapticNotificationOccurred', { type: style === 'error' ? 'error' : 'success' });
+        return;
+      }
+      
+      // Browser Fallback (Браузеры / Instagram)
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+         if (type === 'impact') navigator.vibrate(style === 'light' ? 10 : 20);
+         else if (type === 'selection') navigator.vibrate(10);
+         else if (type === 'notification') navigator.vibrate(style === 'error' ? [20, 50, 20] : [20, 30, 20]);
       }
     } catch (e) {
-      console.error('TG Haptic error:', e);
+      console.error('Haptic error:', e);
     }
   }, []);
 
@@ -708,44 +728,57 @@ export default function App() {
     return () => document.removeEventListener('touchmove', preventZoom);
   }, []);
 
-  // 1. Инициализация Telegram Mini App
+  // 1. Универсальная инициализация Mini App (TG / VK / Browser)
   useEffect(() => {
-    const initTG = async () => {
+    const initApp = async () => {
       try {
-        let attempts = 0;
-        while (!window.Telegram?.WebApp && attempts < 20) {
-          await new Promise(r => setTimeout(r, 100));
-          attempts++;
-        }
-        if (!window.Telegram?.WebApp) throw new Error("TG Bridge timeout");
+        // Даем скриптам миллисекунды на прогрузку
+        await new Promise(r => setTimeout(r, 300));
 
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
-        
-        // Блокируем закрытие свайпом вниз и запрашиваем подтверждение
-        try {
-          if (tg.isVersionAtLeast && tg.isVersionAtLeast('7.7') && tg.disableVerticalSwipes) tg.disableVerticalSwipes();
-          if (tg.isVersionAtLeast && tg.isVersionAtLeast('6.2') && tg.enableClosingConfirmation) tg.enableClosingConfirmation();
-          if (tg.isVersionAtLeast && tg.isVersionAtLeast('8.0') && tg.requestFullscreen) tg.requestFullscreen(); 
-        } catch (e) {
-          console.warn('Advanced TG features missing', e);
+        // Проверка Telegram
+        const tg = window.Telegram?.WebApp;
+        if (tg && tg.platform && tg.platform !== 'unknown') {
+          tg.ready();
+          tg.expand();
+          
+          try {
+            if (tg.isVersionAtLeast && tg.isVersionAtLeast('7.7') && tg.disableVerticalSwipes) tg.disableVerticalSwipes();
+            if (tg.isVersionAtLeast && tg.isVersionAtLeast('6.2') && tg.enableClosingConfirmation) tg.enableClosingConfirmation();
+            if (tg.isVersionAtLeast && tg.isVersionAtLeast('8.0') && tg.requestFullscreen) tg.requestFullscreen(); 
+          } catch (e) {}
+          
+          const bgColor = isLightTheme ? '#150508' : '#050505';
+          try { tg.setHeaderColor(bgColor); tg.setBackgroundColor(bgColor); } catch(e){}
+          
+          setAppPlatform('tg');
+          setHeroPadding('pt-24'); // Оптимально для шапки TG
+          return;
         }
-        
-        // Синхронизируем цвета шапки при старте
-        const bgColor = isLightTheme ? '#150508' : '#050505';
-        tg.setHeaderColor(bgColor);
-        tg.setBackgroundColor(bgColor);
-        
-        setIsTG(true);
-        setHeroPadding('pt-24'); // Увеличенный отступ для TG (добавили ~1 см воздуха сверху)
+
+        // Проверка ВКонтакте
+        const vk = window.vkBridge;
+        if (vk) {
+          try {
+            await vk.send("VKWebAppInit");
+            setAppPlatform('vk');
+            setHeroPadding('pt-[100px]'); // Больше воздуха для широкой шапки ВК
+            return;
+          } catch (e) {
+            console.warn('VK init error', e);
+          }
+        }
+
+        // Обычный браузер / Instagram
+        setAppPlatform('web');
+        setHeroPadding('pt-12'); // Стандартный отступ для веба
+
       } catch (error) {
-        console.error('TG Bridge Init Error:', error);
-        setIsTG(false);
-        setHeroPadding('pt-12'); // Фолбэк для браузера
+        console.error('Bridge Init Error:', error);
+        setAppPlatform('web');
+        setHeroPadding('pt-12');
       }
     };
-    initTG();
+    initApp();
   }, [isLightTheme]);
 
   useEffect(() => {
@@ -1122,7 +1155,7 @@ export default function App() {
                 >
                   {copied ? <Check size={16} /> : <Mail size={16} />}
                   <span className="relative z-10 tracking-widest uppercase text-[10px] sm:text-[11px]">
-                    {copied ? 'Ссылка скопирована' : 'Поделиться визиткой'}
+                    {copied ? 'Ссылка скопирована' : 'Поделиться'}
                   </span>
                   <div className={`absolute inset-0 transition-transform duration-1000 translate-x-[-100%] group-hover:translate-x-[100%] ${isLightTheme ? 'bg-gradient-to-r from-transparent via-white/20 to-transparent' : 'bg-gradient-to-r from-transparent via-black/10 to-transparent'}`}></div>
                 </button>
@@ -1702,16 +1735,24 @@ export default function App() {
                   triggerHaptic('impact', 'medium');
                   const url = expandedDemo.demoLink;
                   
-                  if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-                    // Умное открытие для Telegram
-                    window.Telegram.WebApp.openLink(url);
-                  } else {
-                    // Умное открытие для обычных браузеров
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.target = '_blank';
-                    a.rel = 'noopener noreferrer';
-                    a.click();
+                  if (typeof window !== 'undefined') {
+                    const tg = window.Telegram?.WebApp;
+                    const vk = window.vkBridge;
+                    
+                    if (tg && tg.platform && tg.platform !== 'unknown' && tg.openLink) {
+                      // Умное открытие для Telegram
+                      tg.openLink(url);
+                    } else if (vk && vk.supports && vk.supports('VKWebAppOpenExternalLink')) {
+                      // Умное открытие для ВКонтакте
+                      vk.send('VKWebAppOpenExternalLink', { url });
+                    } else {
+                      // Умное открытие для обычных браузеров (Instagram, Safari, Chrome)
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.target = '_blank';
+                      a.rel = 'noopener noreferrer';
+                      a.click();
+                    }
                   }
                 }}
                 className={`group relative w-full py-2 sm:py-2] font-medium rounded-2xl transition-all duration-300 active:scale-[0.98] overflow-hidden flex items-center justify-center gap-3 mb-6 ${isLightTheme ? 'bg-[#D8A0A6] text-[#150508] shadow-[0_10px_30px_rgba(216,160,166,0.2)] hover:shadow-[0_10px_40px_rgba(216,160,166,0.3)]' : 'bg-white text-black shadow-[0_10px_30px_rgba(255,255,255,0.1)] hover:shadow-[0_10px_40px_rgba(255,255,255,0.2)]'}`}
