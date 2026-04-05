@@ -6,20 +6,27 @@ import {
 import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'framer-motion';
 
-if (typeof window !== 'undefined' && !document.getElementById('tg-web-app-script')) {
-  const script = document.createElement('script');
-  script.id = 'tg-web-app-script';
-  script.src = 'https://telegram.org/js/telegram-web-app.js';
-  script.async = true;
-  document.head.appendChild(script);
-}
+if (typeof window !== 'undefined') {
+  const href = window.location.href;
+  
+  // Умная загрузка: грузим скрипт Телеграма ТОЛЬКО если мы реально внутри Телеграма.
+  // Это спасает от белого экрана и зависаний в РФ без VPN, так как telegram.org заблокирован.
+  if (href.includes('tgWebApp') && !document.getElementById('tg-web-app-script')) {
+    const script = document.createElement('script');
+    script.id = 'tg-web-app-script';
+    script.src = 'https://telegram.org/js/telegram-web-app.js';
+    script.async = true;
+    document.head.appendChild(script);
+  }
 
-if (typeof window !== 'undefined' && !document.getElementById('vk-bridge-script')) {
-  const script = document.createElement('script');
-  script.id = 'vk-bridge-script';
-  script.src = 'https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js';
-  script.async = true;
-  document.head.appendChild(script);
+  // Грузим скрипт ВК только внутри ВК
+  if (href.includes('vk_') && !document.getElementById('vk-bridge-script')) {
+    const script = document.createElement('script');
+    script.id = 'vk-bridge-script';
+    script.src = 'https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js';
+    script.async = true;
+    document.head.appendChild(script);
+  }
 }
 
 // =========================================================================
