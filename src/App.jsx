@@ -33,7 +33,7 @@ if (typeof window !== 'undefined') {
 // =========================================================================
 const CONFIG = {
   // 1. Главное фото (которое проявляется по удержанию пальца)
-  heroPhoto: "https://i.postimg.cc/R0GhWRGz/unnamed.jpg",
+  heroPhoto: "/hero.jpg",
   
   // 2. Имя в самом верху (статус-бар)
   headerName: "DESIGN & CODE BY ELENA SOTNIKOVA",
