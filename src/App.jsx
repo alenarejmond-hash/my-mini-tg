@@ -77,11 +77,11 @@ const CONFIG = {
   portfolio: [
     { title: "NANO-визитка", icon: Compass, demoLink: "https://nano.nice-app.ru/" }, // Замените ссылку на свою
    // { title: "ТУРАГЕНТ", icon: Heart, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
-   // { title: "РЕЖИССЁР", icon: Heart, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
+    { title: "БЛОГЕР", icon: Heart, demoLink: "https://pola.nice-app.ru/" }, // Замените ссылку на свою
     { title: "ТУРАГЕНТ", icon: Flame, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
    // { title: "АВТОРСКИЕ ТУРЫ", icon: Star, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
     { title: "ПСИХОЛОГ", icon: Camera, demoLink: "https://alenarejmond-hash.github.io/app-vk/" }, // Замените ссылку на свою
-   // { title: "ЭЗОРЕТИК", icon: Sparkles, demoLink: "https://turagent.nice-app.ru/" }, // Замените ссылку на свою
+    { title: "МОЯ ВИЗИТКА", icon: Sparkles, demoLink: "https://appsea.ru/" }, // Замените ссылку на свою
   ],
 
   // 7. Инвестиции (Тарифы) в стиле Apple Wallet
