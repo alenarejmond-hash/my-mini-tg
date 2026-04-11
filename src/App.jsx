@@ -1342,71 +1342,81 @@ export default function App() {
           </div>
         </section>
 
-        {/* --- 4. ТАРИФЫ (CINEMATIC 3D CAROUSEL) --- */}
-        <section className="flex flex-col gap-6 w-full overflow-hidden">
-          <h2 className={`text-xs uppercase tracking-[0.3em] mb-2 transition-colors duration-700 ${isLightTheme ? 'text-[#D8A0A6]/50' : 'text-white/40'}`}>Тариф</h2>
+        {/* --- 4. ТАРИФЫ (MAGNETIC SNAP SLIDER) --- */}
+        <section className="flex flex-col gap-4 w-full overflow-hidden">
+          <h2 className={`text-xs uppercase tracking-[0.3em] px-6 transition-colors duration-700 ${isLightTheme ? 'text-[#D8A0A6]/50' : 'text-white/40'}`}>Тариф</h2>
           
-          <div className="relative h-[550px] sm:h-[600px] w-full flex justify-center items-center touch-pan-y" style={{ perspective: '1200px' }}>
-            {CONFIG.tariffs.map((tariff, idx) => {
-              const activeIdx = CONFIG.tariffs.findIndex(t => t.id === activeTariff);
-              const isActive = activeTariff === tariff.id;
-              const distance = idx - activeIdx;
-              const isCenter = distance === 0;
-              const absDistance = Math.abs(distance);
-              const sign = Math.sign(distance);
-              
-              // 1 ВАРИАНТ: CINEMATIC COVER FLOW (Идеально для 4 карточек)
-              let transformStyle = '';
-              let zIndex = 10;
-              let opacityClass = '';
+          <div 
+            id="tariffs-slider"
+            className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar w-full pb-10 pt-6 px-[7.5vw] sm:px-[10vw] gap-4 sm:gap-6 items-center"
+            style={{ scrollBehavior: 'smooth' }}
+            onScroll={(e) => {
+              const container = e.currentTarget;
+              const children = Array.from(container.children);
+              const containerCenter = container.scrollLeft + container.clientWidth / 2;
+              let closest = 0;
+              let minDistance = Infinity;
 
-              if (isCenter) {
-                transformStyle = 'translateX(0px) translateZ(40px) rotateY(0deg) scale(1)';
-                zIndex = 40;
-                opacityClass = 'opacity-100 shadow-[0_30px_60px_rgba(0,0,0,0.5)] cursor-default';
-              } else if (absDistance === 1) {
-                transformStyle = `translateX(${sign * 65}%) translateZ(-120px) rotateY(${sign * -35}deg) scale(0.9)`;
-                zIndex = 30;
-                opacityClass = 'opacity-50 hover:opacity-100 shadow-[0_10px_30px_rgba(0,0,0,0.3)] cursor-pointer';
-              } else if (absDistance === 2) {
-                transformStyle = `translateX(${sign * 90}%) translateZ(-250px) rotateY(${sign * -45}deg) scale(0.8)`;
-                zIndex = 20;
-                opacityClass = 'opacity-20 hover:opacity-80 shadow-[0_10px_20px_rgba(0,0,0,0.2)] cursor-pointer';
-              } else {
-                transformStyle = `translateX(${sign * 110}%) translateZ(-350px) rotateY(${sign * -55}deg) scale(0.7)`;
-                zIndex = 10;
-                opacityClass = 'opacity-0 pointer-events-none';
+              // Вычисляем, какая карточка ближе всего к центру экрана
+              children.forEach((child, index) => {
+                const childCenter = child.offsetLeft + child.clientWidth / 2;
+                const distance = Math.abs(containerCenter - childCenter);
+                if (distance < minDistance) {
+                  minDistance = distance;
+                  closest = index;
+                }
+              });
+
+              const newActiveId = CONFIG.tariffs[closest]?.id;
+              if (newActiveId && newActiveId !== activeTariff) {
+                 setActiveTariff(newActiveId);
+                 // Мягкая вибрация при перелистывании карточек
+                 if (typeof window !== 'undefined' && window.Telegram?.WebApp?.HapticFeedback) {
+                   window.Telegram.WebApp.HapticFeedback.selectionChanged();
+                 } else if (typeof navigator !== 'undefined' && navigator.vibrate) {
+                   navigator.vibrate(10);
+                 }
               }
-
-              // Индивидуальные стили карточек (Элитарный дизайн)
+            }}
+          >
+            {CONFIG.tariffs.map((tariff) => {
+              const isActive = activeTariff === tariff.id;
+              
+              // Индивидуальные стили и НЕОНОВОЕ свечение для активной карточки
               let cardStyle = '';
+              let neonGlow = '';
               let titleColor, subtitleColor, featureColor, dotColor, priceColor, oldPriceColor, checkColor;
 
               if (tariff.id === 'nano') {
-                  cardStyle = isLightTheme ? 'bg-[#2A2A2A]/95 border-gray-400/30' : 'bg-zinc-900/95 border-gray-500/30';
+                  cardStyle = isLightTheme ? 'bg-[#2A2A2A]/95' : 'bg-zinc-900/95';
+                  neonGlow = isActive ? 'shadow-[0_0_40px_rgba(156,163,175,0.4)] border-gray-400/60' : 'shadow-none border-gray-500/20';
                   titleColor = 'text-white'; subtitleColor = 'text-gray-400'; featureColor = 'text-gray-300'; dotColor = 'bg-gray-400'; priceColor = 'text-white'; oldPriceColor = 'text-gray-500'; checkColor = 'bg-gray-400/20 text-gray-200';
               } else if (tariff.id === 'pwa') {
-                  cardStyle = isLightTheme ? 'bg-[#2A0F14]/95 border-[#D8A0A6]/40' : 'bg-[#1A0A0C]/95 border-[#9E5B6A]/40';
+                  cardStyle = isLightTheme ? 'bg-[#2A0F14]/95' : 'bg-[#1A0A0C]/95';
+                  neonGlow = isActive ? (isLightTheme ? 'shadow-[0_0_40px_rgba(216,160,166,0.5)] border-[#D8A0A6]/80' : 'shadow-[0_0_40px_rgba(158,91,106,0.6)] border-[#9E5B6A]/80') : 'shadow-none border-[#9E5B6A]/20';
                   titleColor = 'text-white'; subtitleColor = 'text-[#D8A0A6]'; featureColor = 'text-[#F5ECEE]/80'; dotColor = 'bg-[#D8A0A6]'; priceColor = 'text-white'; oldPriceColor = 'text-[#D8A0A6]/50'; checkColor = 'bg-[#D8A0A6]/20 text-[#D8A0A6]';
               } else if (tariff.id === 'base') {
-                  cardStyle = isLightTheme ? 'bg-[#201A0A]/95 border-[#D4AF37]/40' : 'bg-[#1A1505]/95 border-[#D4AF37]/30';
+                  cardStyle = isLightTheme ? 'bg-[#201A0A]/95' : 'bg-[#1A1505]/95';
+                  neonGlow = isActive ? 'shadow-[0_0_40px_rgba(212,175,55,0.5)] border-[#D4AF37]/80' : 'shadow-none border-[#D4AF37]/20';
                   titleColor = 'text-white'; subtitleColor = 'text-[#D4AF37]'; featureColor = 'text-white/80'; dotColor = 'bg-[#D4AF37]'; priceColor = 'text-white'; oldPriceColor = 'text-[#D4AF37]/50'; checkColor = 'bg-[#D4AF37]/20 text-[#D4AF37]';
               } else if (tariff.id === 'custom') {
-                  cardStyle = isLightTheme ? 'bg-[#050505]/95 border-white/30' : 'bg-black/95 border-white/20';
+                  cardStyle = isLightTheme ? 'bg-[#050505]/95' : 'bg-black/95';
+                  neonGlow = isActive ? 'shadow-[0_0_40px_rgba(255,255,255,0.3)] border-white/60' : 'shadow-none border-white/10';
                   titleColor = 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]'; subtitleColor = 'text-gray-400 font-bold'; featureColor = 'text-white/90'; dotColor = 'bg-white shadow-[0_0_5px_rgba(255,255,255,0.5)]'; priceColor = 'text-white'; oldPriceColor = 'text-white/30'; checkColor = 'bg-white/20 text-white';
               }
 
               return (
                 <div
                   key={tariff.id}
-                  onClick={() => {
+                  onClick={(e) => {
                     if (!isActive) {
                       triggerHaptic('impact', 'medium');
                       setActiveTariff(tariff.id);
+                      e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                     }
                   }}
-                  className={`absolute w-full max-w-[300px] rounded-[2.5rem] p-7 transition-all duration-[800ms] ease-[cubic-bezier(0.23,1,0.32,1)] backdrop-blur-2xl border flex flex-col justify-between ${opacityClass} ${cardStyle}`}
-                  style={{ height: 'auto', minHeight: '460px', transform: transformStyle, zIndex: zIndex }}
+                  className={`shrink-0 w-[85vw] sm:w-[320px] max-w-[340px] snap-center rounded-[2.5rem] p-7 transition-all duration-500 backdrop-blur-2xl border flex flex-col justify-between ${isActive ? 'scale-100 opacity-100' : 'scale-[0.92] opacity-40'} ${cardStyle} ${neonGlow}`}
+                  style={{ height: 'auto', minHeight: '480px' }}
                 >
                   <div>
                     <div className="flex justify-between items-start mb-4">
@@ -1454,7 +1464,7 @@ export default function App() {
           </div>
 
           {/* Индикаторы (точки) тарифов внизу */}
-          <div className="flex justify-center gap-2 mt-2 z-10">
+          <div className="flex justify-center gap-2 mt-0 z-10 px-4">
             {CONFIG.tariffs.map((tariff, idx) => {
               const isActive = activeTariff === tariff.id;
               return (
@@ -1463,6 +1473,10 @@ export default function App() {
                   onClick={() => {
                     triggerHaptic('selection');
                     setActiveTariff(tariff.id);
+                    const container = document.getElementById('tariffs-slider');
+                    if (container && container.children[idx]) {
+                      container.children[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
                   }}
                   className={`h-1.5 rounded-full transition-all duration-500 ${isActive ? (isLightTheme ? 'bg-[#D8A0A6] w-6' : 'bg-white w-6') : (isLightTheme ? 'bg-[#F5ECEE]/20 w-1.5 hover:bg-[#F5ECEE]/40' : 'bg-white/20 w-1.5 hover:bg-white/40')}`}
                 />
