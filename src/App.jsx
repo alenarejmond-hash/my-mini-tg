@@ -102,6 +102,14 @@ const CONFIG = {
       features: ['Web-визитка с WOW-эффектом', 'Работает с/без VPN в любой точке мира', 'Твой личный поддомен имя.appsea.ru', 'Сохранение ваших контактов в один клик', 'Аналитика Яндекс.Метрики', 'Установка на экран телефона (PWA)', 'Быстрый запуск: 1–3 дня', 'Вечный доступ: без абонентской платы'],
     },
     {
+      id: 'pwa',
+      title: 'PWA Lend',
+      subtitle: 'Визитка-лендинг',
+      price: '5 990 ₽',
+      oldPrice: '10 000 ₽',
+      features: ['Одностраничная структура в 1 скролл', 'Установка на экран телефона (PWA)', 'Адаптивный уникальный дизайн', 'Форма сбора заявок', 'Аналитика Яндекс.Метрики', 'Запуск за 2-4 дня', 'Поддомен навсегда', 'Без абонентской платы'],
+    },
+    {
       id: 'base', 
       title: 'Pro',
       subtitle: 'Авторская архитектура',
@@ -416,14 +424,14 @@ const OrderForm = ({ onClose, onSuccess, isLightTheme, triggerHaptic }) => {
 
             <motion.div variants={itemVars} className="flex flex-col gap-3">
               <p className={`text-[10px] uppercase tracking-widest pl-2 ${isLightTheme ? 'text-[#D8A0A6]' : 'text-white/40'}`}>Выбор тарифа</p>
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                {['Nano', 'Pro', 'Ultra'].map((t) => (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+                {['Nano', 'PWA Lend', 'Pro', 'Ultra'].map((t) => (
                   <div 
                     key={t}
                     onClick={() => { triggerHaptic('medium'); setValue('tariff', t); }}
                     className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition-all duration-300 flex flex-col items-center justify-center gap-2 active:scale-95 ${watchTariff === t ? (isLightTheme ? 'bg-[#D8A0A6]/10 border-[#D8A0A6] shadow-[0_0_15px_rgba(216,160,166,0.2)] text-[#F5ECEE]' : 'bg-white/10 border-white/40 shadow-[0_0_15px_rgba(255,255,255,0.1)] text-white') : (isLightTheme ? 'bg-transparent border-[#F5ECEE]/10 opacity-60 text-[#F5ECEE]/60' : 'bg-transparent border-white/10 opacity-50 text-white/50')}`}
                   >
-                    <span className="text-sm sm:text-base font-medium tracking-wide">{t}</span>
+                    <span className="text-sm sm:text-base font-medium tracking-wide text-center leading-tight">{t}</span>
                   </div>
                 ))}
               </div>
@@ -1334,71 +1342,58 @@ export default function App() {
           </div>
         </section>
 
-        {/* --- 4. ТАРИФЫ (APPLE WALWAL VIBE) --- */}
-        <section className="flex flex-col gap-6">
+        {/* --- 4. ТАРИФЫ (CINEMATIC 3D CAROUSEL) --- */}
+        <section className="flex flex-col gap-6 w-full overflow-hidden">
           <h2 className={`text-xs uppercase tracking-[0.3em] mb-2 transition-colors duration-700 ${isLightTheme ? 'text-[#D8A0A6]/50' : 'text-white/40'}`}>Тариф</h2>
           
-          {/* Увеличена высота контейнера, чтобы нижний круг помещался полностью */}
-          <div className="relative h-[660px] sm:h-[700px] w-full flex justify-center items-start perspective-1000 touch-pan-y">
-            {CONFIG.tariffs.map((tariff) => {
+          <div className="relative h-[550px] sm:h-[600px] w-full flex justify-center items-center touch-pan-y" style={{ perspective: '1200px' }}>
+            {CONFIG.tariffs.map((tariff, idx) => {
+              const activeIdx = CONFIG.tariffs.findIndex(t => t.id === activeTariff);
               const isActive = activeTariff === tariff.id;
+              const distance = idx - activeIdx;
+              const isCenter = distance === 0;
+              const absDistance = Math.abs(distance);
+              const sign = Math.sign(distance);
               
-              // ЖЕСТКАЯ ПРИВЯЗКА К 3 ТОЧКАМ (КАК НА ФОТО - ДИАГРАММА ВЕННА)
-              let transformClasses = '';
-              
-              if (tariff.id === 'nano') {
-                // Левый верхний круг (теперь ровный)
-                transformClasses = isActive 
-                  ? 'z-30 -translate-x-[20px] sm:-translate-x-[30px] translate-y-0 scale-100 rotate-0 opacity-100 shadow-[0_30px_60px_rgba(0,0,0,0.5)]'
-                  : 'z-10 -translate-x-[40px] sm:-translate-x-[60px] translate-y-[15px] scale-[0.85] rotate-0 opacity-[0.65] hover:opacity-100';
-              } else if (tariff.id === 'custom') {
-                // Правый верхний круг (теперь ровный)
-                transformClasses = isActive 
-                  ? 'z-30 translate-x-[20px] sm:translate-x-[30px] translate-y-0 scale-100 rotate-0 opacity-100 shadow-[0_30px_60px_rgba(0,0,0,0.5)]'
-                  : 'z-10 translate-x-[40px] sm:translate-x-[60px] translate-y-[15px] scale-[0.85] rotate-0 opacity-[0.65] hover:opacity-100';
-              } else if (tariff.id === 'base') {
-                // Нижний центральный круг
-                transformClasses = isActive 
-                  ? 'z-30 translate-x-0 translate-y-[120px] sm:translate-y-[140px] scale-100 rotate-0 opacity-100 shadow-[0_30px_60px_rgba(0,0,0,0.5)]'
-                  : 'z-20 translate-x-0 translate-y-[140px] sm:translate-y-[160px] scale-[0.85] rotate-0 opacity-[0.65] hover:opacity-100';
-              }
+              // 1 ВАРИАНТ: CINEMATIC COVER FLOW (Идеально для 4 карточек)
+              let transformStyle = '';
+              let zIndex = 10;
+              let opacityClass = '';
 
-              // Индивидуальные стили карточек
-              let colorClasses = '';
-              if (tariff.id === 'nano') {
-                  colorClasses = isLightTheme ? 'bg-[#2A1015]/95 border-[#D8A0A6]/20' : 'bg-zinc-900/95 border-zinc-700/50';
-              } else if (tariff.id === 'base') {
-                  colorClasses = isLightTheme ? 'bg-[#20080C]/90 border-[#D8A0A6]/30' : 'bg-white/10 border-white/20';
-              } else if (tariff.id === 'custom') {
-                  colorClasses = isLightTheme ? 'bg-[#1A080C]/95 border-[#D8A0A6]/50 shadow-[0_0_30px_rgba(216,160,166,0.2)]' : 'bg-[#050505]/95 border-[#D4AF37]/50 shadow-[0_0_30px_rgba(212,175,55,0.15)]';
-              }
-
-              // Тонкая настройка типографики внутри карточки
-              let titleColor, subtitleColor, featureColor, dotColor, priceColor, oldPriceColor, checkColor;
-              if (tariff.id === 'custom' && !isLightTheme) {
-                titleColor = 'text-white drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]';
-                subtitleColor = 'text-[#D4AF37] font-bold';
-                featureColor = 'text-white/90';
-                dotColor = 'bg-[#D4AF37]/70 shadow-[0_0_5px_rgba(212,175,55,0.5)]';
-                priceColor = 'text-[#D4AF37] drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]';
-                oldPriceColor = 'text-white/30';
-                checkColor = 'bg-[#D4AF37]/10 text-[#D4AF37]';
-              } else if (isLightTheme) {
-                titleColor = 'text-[#F5ECEE]';
-                subtitleColor = 'text-[#D8A0A6]/80';
-                featureColor = 'text-[#F5ECEE]/80';
-                dotColor = 'bg-[#D8A0A6]/60';
-                priceColor = 'text-[#F5ECEE]';
-                oldPriceColor = 'text-[#F5ECEE]/40';
-                checkColor = 'bg-[#D8A0A6]/10 text-[#D8A0A6]';
+              if (isCenter) {
+                transformStyle = 'translateX(0px) translateZ(40px) rotateY(0deg) scale(1)';
+                zIndex = 40;
+                opacityClass = 'opacity-100 shadow-[0_30px_60px_rgba(0,0,0,0.5)] cursor-default';
+              } else if (absDistance === 1) {
+                transformStyle = `translateX(${sign * 65}%) translateZ(-120px) rotateY(${sign * -35}deg) scale(0.9)`;
+                zIndex = 30;
+                opacityClass = 'opacity-50 hover:opacity-100 shadow-[0_10px_30px_rgba(0,0,0,0.3)] cursor-pointer';
+              } else if (absDistance === 2) {
+                transformStyle = `translateX(${sign * 90}%) translateZ(-250px) rotateY(${sign * -45}deg) scale(0.8)`;
+                zIndex = 20;
+                opacityClass = 'opacity-20 hover:opacity-80 shadow-[0_10px_20px_rgba(0,0,0,0.2)] cursor-pointer';
               } else {
-                titleColor = 'text-white';
-                subtitleColor = 'text-white/50';
-                featureColor = 'text-white/80';
-                dotColor = 'bg-white/30';
-                priceColor = 'text-white';
-                oldPriceColor = 'text-white/30';
-                checkColor = 'bg-white/10 text-white';
+                transformStyle = `translateX(${sign * 110}%) translateZ(-350px) rotateY(${sign * -55}deg) scale(0.7)`;
+                zIndex = 10;
+                opacityClass = 'opacity-0 pointer-events-none';
+              }
+
+              // Индивидуальные стили карточек (Элитарный дизайн)
+              let cardStyle = '';
+              let titleColor, subtitleColor, featureColor, dotColor, priceColor, oldPriceColor, checkColor;
+
+              if (tariff.id === 'nano') {
+                  cardStyle = isLightTheme ? 'bg-[#2A2A2A]/95 border-gray-400/30' : 'bg-zinc-900/95 border-gray-500/30';
+                  titleColor = 'text-white'; subtitleColor = 'text-gray-400'; featureColor = 'text-gray-300'; dotColor = 'bg-gray-400'; priceColor = 'text-white'; oldPriceColor = 'text-gray-500'; checkColor = 'bg-gray-400/20 text-gray-200';
+              } else if (tariff.id === 'pwa') {
+                  cardStyle = isLightTheme ? 'bg-[#2A0F14]/95 border-[#D8A0A6]/40' : 'bg-[#1A0A0C]/95 border-[#9E5B6A]/40';
+                  titleColor = 'text-white'; subtitleColor = 'text-[#D8A0A6]'; featureColor = 'text-[#F5ECEE]/80'; dotColor = 'bg-[#D8A0A6]'; priceColor = 'text-white'; oldPriceColor = 'text-[#D8A0A6]/50'; checkColor = 'bg-[#D8A0A6]/20 text-[#D8A0A6]';
+              } else if (tariff.id === 'base') {
+                  cardStyle = isLightTheme ? 'bg-[#201A0A]/95 border-[#D4AF37]/40' : 'bg-[#1A1505]/95 border-[#D4AF37]/30';
+                  titleColor = 'text-white'; subtitleColor = 'text-[#D4AF37]'; featureColor = 'text-white/80'; dotColor = 'bg-[#D4AF37]'; priceColor = 'text-white'; oldPriceColor = 'text-[#D4AF37]/50'; checkColor = 'bg-[#D4AF37]/20 text-[#D4AF37]';
+              } else if (tariff.id === 'custom') {
+                  cardStyle = isLightTheme ? 'bg-[#050505]/95 border-white/30' : 'bg-black/95 border-white/20';
+                  titleColor = 'text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]'; subtitleColor = 'text-gray-400 font-bold'; featureColor = 'text-white/90'; dotColor = 'bg-white shadow-[0_0_5px_rgba(255,255,255,0.5)]'; priceColor = 'text-white'; oldPriceColor = 'text-white/30'; checkColor = 'bg-white/20 text-white';
               }
 
               return (
@@ -1410,15 +1405,17 @@ export default function App() {
                       setActiveTariff(tariff.id);
                     }
                   }}
-                  className={`absolute w-full max-w-[320px] rounded-[2.5rem] p-7 transition-all duration-[800ms] ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer backdrop-blur-2xl border flex flex-col justify-between ${transformClasses} ${colorClasses}`}
-                  style={{ height: 'auto', minHeight: '460px' }}
+                  className={`absolute w-full max-w-[300px] rounded-[2.5rem] p-7 transition-all duration-[800ms] ease-[cubic-bezier(0.23,1,0.32,1)] backdrop-blur-2xl border flex flex-col justify-between ${opacityClass} ${cardStyle}`}
+                  style={{ height: 'auto', minHeight: '460px', transform: transformStyle, zIndex: zIndex }}
                 >
                   <div>
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <div className="flex items-center gap-1.5 mb-1">
-                          {tariff.id === 'nano' && <Zap className={`w-3 h-3 ${isLightTheme ? 'text-[#D8A0A6]' : 'text-cyan-400'}`} />}
-                          {tariff.id === 'custom' && <Diamond className={`w-3 h-3 ${isLightTheme ? 'text-[#D8A0A6]' : 'text-[#D4AF37]'}`} />}
+                          {tariff.id === 'nano' && <Zap className="w-3 h-3 text-gray-400" />}
+                          {tariff.id === 'pwa' && <Flame className="w-3 h-3 text-[#D8A0A6]" />}
+                          {tariff.id === 'base' && <Star className="w-3 h-3 text-[#D4AF37]" />}
+                          {tariff.id === 'custom' && <Diamond className="w-3 h-3 text-white" />}
                           <p className={`text-[10px] uppercase tracking-widest ${subtitleColor}`}>{tariff.subtitle}</p>
                         </div>
                         <h3 className={`text-2xl font-light tracking-wide ${titleColor}`}>{tariff.title}</h3>
@@ -1436,13 +1433,13 @@ export default function App() {
                           <div className="flex items-center h-4 shrink-0">
                             <div className={`w-1.5 h-1.5 rounded-full ${dotColor}`}></div>
                           </div>
-                          <p className={`text-xs font-light tracking-wide ${featureColor}`}>{feat}</p>
+                          <p className={`text-xs font-light tracking-wide leading-snug ${featureColor}`}>{feat}</p>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className={`pt-6 mt-6 border-t ${isLightTheme ? 'border-[#D8A0A6]/20' : 'border-white/10'}`}>
+                  <div className={`pt-6 mt-6 border-t ${isActive && tariff.id === 'pwa' ? 'border-[#D8A0A6]/30' : 'border-white/10'}`}>
                     <p className={`text-[10px] uppercase tracking-widest mb-1 ${subtitleColor}`}>Инвестиция</p>
                     <div className="flex items-baseline gap-2">
                       <p className={`text-xl font-medium tracking-wide ${priceColor}`}>{tariff.price}</p>
@@ -1453,6 +1450,23 @@ export default function App() {
                   </div>
                 </div>
               );
+            })}
+          </div>
+
+          {/* Индикаторы (точки) тарифов внизу */}
+          <div className="flex justify-center gap-2 mt-2 z-10">
+            {CONFIG.tariffs.map((tariff, idx) => {
+              const isActive = activeTariff === tariff.id;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    triggerHaptic('selection');
+                    setActiveTariff(tariff.id);
+                  }}
+                  className={`h-1.5 rounded-full transition-all duration-500 ${isActive ? (isLightTheme ? 'bg-[#D8A0A6] w-6' : 'bg-white w-6') : (isLightTheme ? 'bg-[#F5ECEE]/20 w-1.5 hover:bg-[#F5ECEE]/40' : 'bg-white/20 w-1.5 hover:bg-white/40')}`}
+                />
+              )
             })}
           </div>
         </section>
